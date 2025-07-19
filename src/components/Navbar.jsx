@@ -18,35 +18,37 @@ const Navbar = () => {
 
   return (
     <nav
-      className="main-navbar"
       style={{
         display: "flex",
         justifyContent: "space-between",
         alignItems: "center",
         padding: "1rem 2rem",
-        backgroundColor: "#1e293b",
+        background: "linear-gradient(to right, #1e3a8a, #1e293b)",
         color: "white",
-        boxShadow: "0 4px 12px rgba(0, 0, 0, 0.2)",
         fontFamily: "Segoe UI, sans-serif",
+        boxShadow: "0 4px 10px rgba(0, 0, 0, 0.25)",
+        position: "sticky",
+        top: 0,
+        zIndex: 1000,
       }}
     >
+      {/* Logo */}
       <div
-        className="logo"
         onClick={() => navigate("/")}
         style={{
-          fontSize: "22px",
+          fontSize: "24px",
           fontWeight: "bold",
           cursor: "pointer",
           color: "#facc15",
-          transition: "color 0.3s ease",
+          textShadow: "1px 1px 2px #000",
         }}
       >
-        🔐 React Auth
+        🔐 ReactVault
       </div>
 
+      {/* Links */}
       {!loggedInUser ? (
         <ul
-          className="nav-links"
           style={{
             display: "flex",
             gap: "1.5rem",
@@ -56,24 +58,40 @@ const Navbar = () => {
           }}
         >
           <li
+            onClick={() => navigate("/login")}
             style={{
               cursor: "pointer",
-              fontWeight: "500",
-              transition: "color 0.3s",
+              fontWeight: 500,
+              padding: "6px 12px",
+              borderRadius: "6px",
+              transition: "all 0.3s",
             }}
-            onClick={() => navigate("/login")}
+            onMouseEnter={(e) =>
+              (e.target.style.backgroundColor = "#334155")
+            }
+            onMouseLeave={(e) =>
+              (e.target.style.backgroundColor = "transparent")
+            }
           >
-            Login
+            🔑 Login
           </li>
           <li
+            onClick={() => navigate("/signup")}
             style={{
               cursor: "pointer",
-              fontWeight: "500",
-              transition: "color 0.3s",
+              fontWeight: 500,
+              padding: "6px 12px",
+              borderRadius: "6px",
+              transition: "all 0.3s",
             }}
-            onClick={() => navigate("/signup")}
+            onMouseEnter={(e) =>
+              (e.target.style.backgroundColor = "#334155")
+            }
+            onMouseLeave={(e) =>
+              (e.target.style.backgroundColor = "transparent")
+            }
           >
-            Signup
+            ✍️ Signup
           </li>
         </ul>
       ) : (
@@ -87,10 +105,11 @@ const Navbar = () => {
           <span
             style={{
               fontWeight: "600",
-              color: "#a5f3fc",
               backgroundColor: "#0f172a",
               padding: "6px 12px",
               borderRadius: "8px",
+              color: "#93c5fd",
+              fontSize: "15px",
             }}
           >
             👋 Welcome, {loggedInUser.username}
