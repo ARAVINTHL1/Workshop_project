@@ -1,7 +1,5 @@
-// src/components/Login.jsx
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import "../index.css"; // global styles
 
 const Login = () => {
   const [email, setEmail] = useState("");
@@ -10,34 +8,44 @@ const Login = () => {
 
   const handleLogin = (e) => {
     e.preventDefault();
-    alert(`Login successful for: ${email}`);
+    const storedUser = JSON.parse(localStorage.getItem("signupUser"));
+
+    if (!storedUser) {
+      alert("No user found. Please sign up first.");
+      return;
+    }
+
+    if (email === storedUser.email && password === storedUser.password) {
+      alert("Login successful!");
+      navigate("/"); // or wherever you want after login
+    } else {
+      alert("Invalid credentials.");
+    }
   };
 
   return (
     <div className="auth-wrapper login-bg">
       <div className="auth-container">
-        <h2 className="auth-heading">Login</h2>
-        <form onSubmit={handleLogin} className="auth-form">
+        <h2 className="auth-heading">🔐 Login</h2>
+        <form className="auth-form" onSubmit={handleLogin}>
           <input
             type="email"
-            placeholder="Email"
+            placeholder="Enter email"
             value={email}
-            required
             onChange={(e) => setEmail(e.target.value)}
           />
           <input
             type="password"
-            placeholder="Password"
+            placeholder="Enter password"
             value={password}
-            required
             onChange={(e) => setPassword(e.target.value)}
           />
-          <button type="submit">Login</button>
+          <button type="submit">➡️ Login</button>
         </form>
-        <p>
-          Don’t have an account?{" "}
+        <p style={{ marginTop: "1rem" }}>
+          New here?{" "}
           <span onClick={() => navigate("/signup")} className="link-text">
-            Signup here ➡️
+            Signup now
           </span>
         </p>
       </div>
