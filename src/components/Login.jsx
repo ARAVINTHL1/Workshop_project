@@ -1,5 +1,7 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const Login = () => {
   const [email, setEmail] = useState("");
@@ -8,19 +10,35 @@ const Login = () => {
 
   const handleLogin = (e) => {
     e.preventDefault();
+
     const storedUser = JSON.parse(localStorage.getItem("signupUser"));
 
     if (!storedUser) {
-      alert("No user found. Please sign up first.");
+      toast.warning("⚠️ No user found. Please sign up first.");
       return;
     }
 
-    if (email === storedUser.email && password === storedUser.password) {
-      alert("Login successful!");
-      navigate("/"); // or wherever you want after login
-    } else {
-      alert("Invalid credentials.");
+    if (email !== storedUser.email) {
+      toast.error("❌ Invalid email.");
+      return;
     }
+
+    if (password !== storedUser.password) {
+      toast.error("❌ Incorrect password.");
+      return;
+    }
+
+    // ✅ If all okay
+    toast.success("✅ Login successful! Redirecting...", {
+      autoClose: 1500, // Show for 1.5 sec
+    });
+
+    localStorage.setItem("loggedInUser", JSON.stringify(storedUser));
+
+    // ⏳ Wait before redirecting
+    setTimeout(() => {
+      navigate("/generate");
+    }, 1600); // After toast closes
   };
 
   return (

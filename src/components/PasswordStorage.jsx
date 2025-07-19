@@ -1,6 +1,18 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 
+// 🔗 Map app names to their logo URLs
+const appLogos = {
+  instagram: "https://cdn-icons-png.flaticon.com/512/174/174855.png",
+  facebook: "https://cdn-icons-png.flaticon.com/512/733/733547.png",
+  gmail: "https://cdn-icons-png.flaticon.com/512/281/281769.png",
+  twitter: "https://cdn-icons-png.flaticon.com/512/733/733579.png",
+  linkedin: "https://cdn-icons-png.flaticon.com/512/174/174857.png",
+  whatsapp: "https://cdn-icons-png.flaticon.com/512/733/733585.png",
+  youtube: "https://cdn-icons-png.flaticon.com/512/1384/1384060.png",
+  default: "https://cdn-icons-png.flaticon.com/512/561/561127.png", // 🔒 default lock icon
+};
+
 const PasswordStorage = () => {
   const navigate = useNavigate();
   const [passwords, setPasswords] = useState([]);
@@ -19,6 +31,13 @@ const PasswordStorage = () => {
   const clearPasswords = () => {
     localStorage.removeItem("passwords");
     setPasswords([]);
+  };
+
+  // 🔎 Get logo URL based on app name
+  const getLogo = (appName) => {
+    if (!appName) return appLogos.default;
+    const key = appName.toLowerCase().trim();
+    return appLogos[key] || appLogos.default;
   };
 
   return (
@@ -48,26 +67,35 @@ const PasswordStorage = () => {
                   boxShadow: "0 2px 10px rgba(0, 0, 0, 0.08)",
                   textAlign: "left",
                   position: "relative",
+                  display: "flex",
+                  alignItems: "center",
+                  gap: "1rem",
                 }}
               >
-                <h3
+                <img
+                  src={getLogo(entry.appName)}
+                  alt={entry.appName}
                   style={{
-                    margin: "0 0 10px",
-                    fontSize: "18px",
-                    color: "#0f172a",
+                    width: "40px",
+                    height: "40px",
+                    borderRadius: "8px",
+                    objectFit: "contain",
                   }}
-                >
-                  📱 {entry.appName}
-                </h3>
-                <p style={{ margin: "6px 0", fontSize: "15px" }}>
-                  👤 <strong>Username:</strong> {entry.username}
-                </p>
-                <p style={{ margin: "6px 0", fontSize: "15px" }}>
-                  🔐 <strong>Password:</strong>{" "}
-                  <span style={{ color: "#2563eb", wordBreak: "break-word" }}>
-                    {entry.password}
-                  </span>
-                </p>
+                />
+                <div>
+                  <h3 style={{ margin: "0 0 8px", fontSize: "18px", color: "#0f172a" }}>
+                    {entry.appName}
+                  </h3>
+                  <p style={{ margin: "4px 0", fontSize: "15px" }}>
+                    👤 <strong>Username:</strong> {entry.username}
+                  </p>
+                  <p style={{ margin: "4px 0", fontSize: "15px" }}>
+                    🔐 <strong>Password:</strong>{" "}
+                    <span style={{ color: "#2563eb", wordBreak: "break-word" }}>
+                      {entry.password}
+                    </span>
+                  </p>
+                </div>
                 <button
                   onClick={() => deletePassword(index)}
                   style={{
@@ -110,7 +138,7 @@ const PasswordStorage = () => {
 
         <p style={{ marginTop: "1.5rem" }}>
           Back to{" "}
-          <span onClick={() => navigate("/")} className="link-text">
+          <span onClick={() => navigate("/generate")} className="link-text">
             🔐 Save Page
           </span>
         </p>
